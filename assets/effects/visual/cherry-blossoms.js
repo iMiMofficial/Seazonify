@@ -5,7 +5,7 @@
 const cherryBlossomEffect = {
   name: "Cherry Blossom",
   description: "Gentle falling cherry blossom petals for a peaceful spring atmosphere",
-  author: "Seazonify Team",
+  author: "Seazonify",
   type: "visual",
   thumbnail: "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/thumbnails/cherry-blossoms.webp",
   version: "1.0.0",
