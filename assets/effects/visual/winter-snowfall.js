@@ -7,7 +7,7 @@ const winterSnowfallEffect = {
   description: "Gentle snowflakes falling across the screen",
   author: "Seazonify",
   type: "visual",
-  thumbnail: "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/winter-snowfall.webp",
+  thumbnail: "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/thumbnails/winter-snowfall.webp",
   version: "1.0.0",
   created: "2024-01-15",
   category: "winter",
