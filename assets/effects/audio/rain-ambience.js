@@ -8,7 +8,7 @@ const rainAmbienceEffect = {
   type: "audio",
   author: "Seazonify",
   thumbnail: "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/audio/thumbnails/rain-ambience.webp",
-  url: "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/audio/mp3/rain-ambience.mp3",
+  url: "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/audio/mp3/rain-ambience-1.mp3",
   version: "1.0.0",
   created: "2024-01-15",
   category: "summer",
