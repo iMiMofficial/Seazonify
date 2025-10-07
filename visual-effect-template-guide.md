@@ -206,4 +206,4 @@ Choose the single category that best fits your effect.
   - Comments explain non-obvious logic and invariants only.
   - Keep the public shape unchanged so Seazonify can load your effect reliably.
 
-## Thanks for your love and support
+## Thanks for your love and support 🍁
