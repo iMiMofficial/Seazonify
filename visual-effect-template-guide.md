@@ -67,6 +67,8 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 ```
 
+Check production ready effect files here: [visual effects folder](assets/effects/visual/src/)
+
 ### Hard Rules
 - **Prefixing**: use `szfy-` for all classes/ids/data attributes
 - **Thumbnail**: must be `.webp` (recommended 150×150 px)
