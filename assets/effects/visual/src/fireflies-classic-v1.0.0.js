@@ -10,7 +10,7 @@ const firefliesEffect = {
     type: "visual",
     author: "Seazonify",
     thumbnail: "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/thumbnails/fireflies-classic.webp",
-    version: "1.1.0",
+    version: "1.0.0",
     created: "2025-10-07",
     updated: "2025-10-07",
     category: "nature",
