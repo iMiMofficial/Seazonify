@@ -20,6 +20,7 @@
 ## 📑 Table of Contents
 
 - [🎯 What is Seazonify?](#-what-is-seazonify)
+  - [🌟 Open Source at Heart](#-open-source-at-heart)
 - [🚀 Quick Start](#-quick-start)
 - [💎 Use Cases](#-use-cases)
 - [🎨 Effect Library](#-effect-library)
@@ -45,6 +46,35 @@
 ## 🎯 What is Seazonify?
 
 Seazonify is a powerful SaaS platform that enables website owners to add magical visual and audio effects to any website with a single line of code. Create engaging, seasonal experiences that delight visitors and boost engagement—no coding required.
+
+### 🌟 Open Source at Heart
+
+**Our effect library is completely open source!** All effects are available on GitHub for anyone to use, modify, and learn from.
+
+- 📦 **[Browse Effects on GitHub →](https://github.com/iMiMofficial/Seazonify/tree/main/assets/effects)**
+- 🔓 Free to use via CDN links
+- 📚 Learn from production-ready code
+- 🤝 Community-driven development
+- ✨ Contribute your own effects
+
+**Use effects directly from GitHub CDN:**
+```html
+<!-- Use any effect for free via CDN -->
+<script 
+  src="https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/controller/v1/controller.js"
+  visual="https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/dist/winter-snowflakes-classic-v1.0.0.js"
+  defer crossorigin="anonymous"
+></script>
+```
+
+**Seazonify Platform** adds powerful features on top of the open-source library:
+- 🎛️ Visual workspace for non-developers
+- 📊 Analytics and engagement tracking  
+- 📅 Smart scheduling and automation
+- 🌍 Weather-based triggers
+- 🔑 API access for programmatic control
+- 🎨 Effect customization UI
+- 📈 Performance optimization
 
 ### ✨ Key Features
 
@@ -73,8 +103,11 @@ Add Seazonify to your website in 3 simple steps:
 4. **Copy & Paste:** If you're a free user, just add one line of code. Copy from under the **Live Preview** window.
 
 ```html
-<!-- Add this before closing </body> tag (only works for pro user, free user will have effect data)-->
-<script src="https://cdn.seazonify.com/v1/seazonify.js" data-key="your-api-key"></script>
+<script
+  src="https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/controller/v1/controller.js"
+  visual="https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/dist/autumn-leaves-3d-min-v1.0.0.js"
+  defer crossorigin="anonymous"
+></script>
 ```
 
 That's it! Your effects are live. 🎉
