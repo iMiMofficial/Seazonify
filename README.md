@@ -230,7 +230,7 @@ Turn your creative ideas into reality! Our Lab lets you:
 
 Want to create custom effects? Check out our comprehensive guide:
 
-**👉 [Effect Creation Guidelines](EFFECT_GUIDELINES.md)**
+**👉 [Effect Creation Guidelines](effect_guidelines.md)**
 
 This guide includes:
 - ✅ Step-by-step templates for all effect types
@@ -368,7 +368,7 @@ Used by businesses, bloggers, agencies, and developers worldwide to create memor
 - **Scheduling Guide:** https://seazonify.com/aura/docs/scheduling
 
 ### Effect Creation
-- **📖 [Effect Creation Guidelines](EFFECT_GUIDELINES.md)** - Complete guide for developers
+- **📖 [Effect Creation Guidelines](effect_guidelines.md)** - Complete guide for developers
 - **Templates:** Ready-to-use code templates
 - **Best Practices:** Performance, accessibility, security
 - **Submission Process:** How to contribute effects
@@ -389,7 +389,7 @@ We welcome contributions from the community!
 
 Have a creative effect idea? Build it and share with the world!
 
-1. Read the **[Effect Creation Guidelines](EFFECT_GUIDELINES.md)**
+1. Read the **[Effect Creation Guidelines](effect_guidelines.md)**
 2. Create your effect following the templates
 3. Test in the [Lab](https://app.seazonify.com/lab)
 4. Submit for review
@@ -593,7 +593,7 @@ See Seazonify in action:
 ## 📄 Documentation Files
 
 - **[README.md](README.md)** - This file (platform overview)
-- **[EFFECT_GUIDELINES.md](EFFECT_GUIDELINES.md)** - Complete effect creation guide
+- **[EFFECT_GUIDELINES.md](effect_guidelines.md)** - Complete effect creation guide
 
 ---
 
@@ -619,7 +619,7 @@ A: No! Our workspace is completely visual. Coding is only needed if you want to 
 A: Yes! You can submit request to our community.
 
 **Q: How do I create my own effect?**  
-A: Read the [Effect Guidelines](EFFECT_GUIDELINES.md) and use the [Lab](https://app.seazonify.com/lab).
+A: Read the [Effect Guidelines](effect_guidelines.md) and use the [Lab](https://app.seazonify.com/lab).
 
 **Q: Will my effect be approved?**  
 A: If it follows our guidelines, performs well, and is high quality, yes! Review takes 1-3 business days.
