@@ -1,0 +1,63 @@
+{
+  "page": 1,
+  "total_pages": 1,
+  "effects": [
+    {
+      "id": "autumn-leaves-3d",
+      "name": "Autumn Leaves 3D",
+      "description": "Beautiful 3D falling autumn leaves with realistic physics",
+      "icon": "🍂",
+      "type": "visual",
+      "category": "seasonal",
+      "tags": ["autumn", "leaves", "3d", "seasonal", "physics"],
+      "author": "Seazonify Team",
+      "version": "1.0.0",
+      "created": "2024-01-15",
+      "visualJsUrl": "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/dist/autumn-leaves-3d-min-v1.0.0.js",
+      "thumbnail": "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/thumbnails/autumn-leaves-3d.webp"
+    },
+    {
+      "id": "fireflies-classic",
+      "name": "Fireflies Classic",
+      "description": "Glowing fireflies floating in the night",
+      "icon": "✨",
+      "type": "visual",
+      "category": "nature",
+      "tags": ["fireflies", "glow", "night", "nature", "classic"],
+      "author": "Seazonify Team",
+      "version": "1.0.0",
+      "created": "2024-01-15",
+      "visualJsUrl": "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/dist/fireflies-classic-min-v1.0.0.js",
+      "thumbnail": "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/thumbnails/fireflies.webp"
+    },
+    {
+      "id": "maple-leaves-3d",
+      "name": "Maple Leaves 3D",
+      "description": "Stunning 3D maple leaves with realistic physics and wind effects",
+      "icon": "🍁",
+      "type": "visual",
+      "category": "seasonal",
+      "tags": ["maple", "leaves", "3d", "autumn", "physics"],
+      "author": "Seazonify Team",
+      "version": "1.0.0",
+      "created": "2024-01-15",
+      "visualJsUrl": "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/dist/maple-leaves-3d-min-v1.0.0.js",
+      "thumbnail": "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/thumbnails/maple-leaves-3d.webp"
+    },
+    {
+      "id": "winter-snowflakes-classic",
+      "name": "Winter Snowflakes Classic",
+      "description": "Classic gentle snowflakes falling across the screen",
+      "icon": "❄️",
+      "type": "visual",
+      "category": "seasonal",
+      "tags": ["winter", "snowflakes", "classic", "seasonal", "snow"],
+      "author": "Seazonify Team",
+      "version": "1.0.0",
+      "created": "2024-01-15",
+      "visualJsUrl": "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/dist/winter-snowflakes-classic-min-v1.0.0.js",
+      "thumbnail": "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/thumbnails/winter-snowflakes-classic.webp"
+    }
+  ]
+}
+
