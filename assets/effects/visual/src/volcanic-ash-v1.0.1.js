@@ -5,7 +5,7 @@
 const volcanicAshEffect = {
   name: "Volcanic Ash",
   description: "Ash particles floating and drifting through volcanic atmosphere",
-  author: "Seazonify",
+  author: "Md Mim Akhtar",
   type: "visual",
   icon: "🌋",
   thumbnail: "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/thumbnails/volcanic-ash.webp",
