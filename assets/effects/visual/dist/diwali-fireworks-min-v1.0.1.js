@@ -9,7 +9,7 @@ const diwaliFireworksEffect = {
     type: "visual",
     icon: "🎆",
     thumbnail: "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/thumbnails/diwali-fireworks.webp",
-    version: "1.0.0",
+    version: "1.0.1",
     license: "https://seazonify.com/license",
     created: "2025-01-14",
     category: "festival",
