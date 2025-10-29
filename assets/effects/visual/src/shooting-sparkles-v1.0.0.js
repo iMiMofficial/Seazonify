@@ -1,0 +1,83 @@
+const shootingSparklesEffect = {
+  name: "Shooting Sparkles",
+  description: "Dynamic shooting sparkles effect with trails and random motion",
+  icon: "✨",
+  type: "visual",
+  author: "SoloXAssasin",
+  thumbnail: "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/thumbnails/shooting-sparkles.webp",
+  license: "https://seazonify.com/license",
+  version: "1.0.0",
+  created: "2025-10-29",
+  category: "particles",
+  tags: ["sparkles", "particles", "shooting", "theme", "effect"],
+  css: `
+    .szfy-shooting-sparkles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      overflow: hidden;
+    }
+    .szfy-sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: radial-gradient(circle, #ffffff 0%, #ffccff 80%, rgba(255,255,255,0) 100%);
+      border-radius: 50%;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+  `,
+  html: `<div class="szfy-shooting-sparkles" id="szfy-shooting-sparkles-container"></div>`,
+  js: `(function(){
+      const container = document.getElementById('szfy-shooting-sparkles-container');
+      if(!container) return;
+      const sparkles=[];
+      const maxSparkles=50;
+      function random(min,max){return min+Math.random()*(max-min);}
+      class Sparkle{
+          constructor(){
+              this.el=document.createElement('div');
+              this.el.className='szfy-sparkle';
+              container.appendChild(this.el);
+              this.reset();
+          }
+          reset(){
+              this.x=random(0,window.innerWidth);
+              this.y=random(0,window.innerHeight);
+              this.vx=random(-0.5,0.5);
+              this.vy=random(-2,-0.5);
+              this.life=random(50,150);
+              this.age=0;
+              this.scale=random(0.5,1.2);
+              this.el.style.width=4*this.scale+'px';
+              this.el.style.height=4*this.scale+'px';
+              this.el.style.opacity=0.8;
+              this.update();
+          }
+          update(){
+              this.x+=this.vx*2;
+              this.y+=this.vy*2;
+              this.age++;
+              this.el.style.transform='translate('+this.x+'px,'+this.y+'px)';
+              this.el.style.opacity=Math.max(0,0.8*(1-this.age/this.life));
+              if(this.age>=this.life||this.y<0||this.x<0||this.x>window.innerWidth) this.reset();
+          }
+      }
+      for(let i=0;i<maxSparkles;i++) sparkles.push(new Sparkle());
+      function animate(){sparkles.forEach(s=>s.update());requestAnimationFrame(animate);}
+      animate();
+      window.szfyShootingSparklesCleanup=function(){sparkles.forEach(s=>s.el.remove());sparkles.length=0;container.remove();}
+  })();`
+};
+
+if(typeof window!=='undefined' && window.SeazonifyController){
+  window.SeazonifyController.injectVisualEffect(shootingSparklesEffect);
+}
+
+if(typeof module!=='undefined' && module.exports){
+  module.exports = shootingSparklesEffect;
+}
