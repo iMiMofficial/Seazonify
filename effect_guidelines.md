@@ -235,6 +235,7 @@ const myAudioEffect = {
   type: "audio",          // Must be "audio"
   author: "Your Name",
   thumbnail: "https://your-cdn.com/path/to/thumbnail.webp",
+  license: "https://seazonify.com/license", // Don't change this
   version: "1.0.0",
   created: "2025-01-15",
   category: "ambient",
@@ -270,6 +271,7 @@ const myVisualEffect = {
   type: "visual",
   author: "Your Name",
   thumbnail: "https://your-cdn.com/path/to/thumbnail.webp",
+  license: "https://seazonify.com/license", // Don't change this
   version: "1.0.0",
   created: "2025-01-15",
   category: "seasonal",
