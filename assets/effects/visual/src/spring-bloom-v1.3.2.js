@@ -1,0 +1,441 @@
+// Spring Bloom Effect for Seazonify Controller
+// Version 1.3.2: "Realistic Butterflies"
+// - Major upgrade to Butterfly visuals: Separated forewings/hindwings, veins, patterns, and antennae.
+// - Retains "Natural Exits" and "Director" ecosystem logic.
+
+const springBloomEffect = {
+    name: "Spring Bloom",
+    description: "A slow-motion spring dream with hyper-realistic insects. Features detailed butterflies, buzzing bees, and a living ecosystem.",
+    icon: "🌸",
+    type: "visual",
+    author: "Md Mim Akhtar",
+    thumbnail: "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/thumbnails/spring-bloom.webp",
+    version: "1.3.2",
+    license: "https://seazonify.com/license",
+    created: "2026-01-23",
+    category: "spring",
+    tags: ["spring", "sakura", "flowers", "petals", "butterflies", "bees", "bloom", "slow", "nature", "realistic"],
+    css: `
+    .szfy-spring-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      overflow: hidden;
+    }
+    #szfy-spring-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .szfy-spring-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 0%, rgba(255, 240, 220, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+    `,
+    html: `
+    <div class="szfy-spring-container" id="szfy-spring-container">
+      <div class="szfy-spring-overlay"></div>
+      <canvas id="szfy-spring-canvas"></canvas>
+    </div>
+    `,
+    js: `
+    (function() {
+      if (typeof window.szfySpringCleanup === 'function') {
+          window.szfySpringCleanup();
+      }
+
+      const container = document.getElementById('szfy-spring-container');
+      const canvas = document.getElementById('szfy-spring-canvas');
+      if (!container || !canvas) return;
+
+      const ctx = canvas.getContext('2d', { alpha: true });
+      let width, height;
+      let animationId = null;
+      let time = 0;
+
+      // === Configuration ===
+      const config = {
+          petalCount: 40,
+          speedMult: 0.6,
+      };
+
+      // === Resize ===
+      function resize() {
+          width = window.innerWidth;
+          height = window.innerHeight;
+          const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+          canvas.width = width * dpr;
+          canvas.height = height * dpr;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0); 
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      // === Helpers ===
+      function noise(t) { return Math.sin(t) * 0.5 + Math.sin(t * 2.1) * 0.25; }
+
+      // === Classes ===
+      class Petal {
+          constructor(resetY = false) { this.reset(resetY); }
+          reset(resetY = false) {
+              this.depth = Math.random(); 
+              this.x = Math.random() * width;
+              this.y = resetY ? Math.random() * height : -50;
+              this.size = 4 + (this.depth * 5);
+              const baseOpacity = 0.5 + (this.depth * 0.4); 
+              const hue = 340 + Math.random() * 20; 
+              const sat = 60 + Math.random() * 30;
+              const lig = 85 + Math.random() * 10;
+              this.color = \`hsla(\${hue}, \${sat}%, \${lig}%, \${baseOpacity})\`;
+              this.fallSpeed = (0.3 + (this.depth * 0.7) + Math.random() * 0.3) * config.speedMult;
+              this.rotation = Math.random() * Math.PI * 2;
+              this.rotSpeed = ((Math.random() - 0.5) * 0.02) * config.speedMult;
+              this.tumbleOffset = Math.random() * 100;
+              this.tumbleSpeed = (0.02 + Math.random() * 0.03) * config.speedMult;
+              this.swayFreq = 0.01 * config.speedMult;
+              this.swayAmp = (0.5 + Math.random()) * config.speedMult;
+          }
+          update(windX, windY) {
+              const depthFactor = 0.5 + (this.depth * 0.5);
+              this.x += (Math.sin(time * this.swayFreq + this.tumbleOffset) * this.swayAmp) + (windX * depthFactor);
+              this.y += this.fallSpeed + (windY * depthFactor);
+              this.rotation += this.rotSpeed;
+              if (this.y > height + 30) this.reset();
+              if (this.x > width + 50) this.x = -50;
+              if (this.x < -50) this.x = width + 50;
+          }
+          draw() {
+              ctx.save();
+              ctx.translate(this.x, this.y);
+              ctx.rotate(this.rotation);
+              const tumble = Math.sin(time * this.tumbleSpeed + this.tumbleOffset);
+              ctx.scale(1, tumble); 
+              ctx.fillStyle = this.color;
+              ctx.beginPath();
+              ctx.moveTo(0, -this.size/2);
+              ctx.bezierCurveTo(this.size/2, -this.size/2, this.size, 0, 0, this.size);
+              ctx.bezierCurveTo(-this.size, 0, -this.size/2, -this.size/2, 0, -this.size/2);
+              ctx.fill();
+              ctx.restore();
+          }
+      }
+
+      class Insect {
+          constructor(type) {
+              this.type = type; // 'butterfly' or 'bee'
+              this.state = 'enter'; 
+              this.removable = false;
+              this.reset();
+          }
+          
+          reset() {
+              const side = Math.floor(Math.random() * 4); 
+              if (side === 0) { this.x = Math.random() * width; this.y = -50; }
+              else if (side === 1) { this.x = width + 50; this.y = Math.random() * height; }
+              else if (side === 2) { this.x = Math.random() * width; this.y = height + 50; }
+              else { this.x = -50; this.y = Math.random() * height; }
+
+              this.z = Math.random() * 0.4 + 0.6; // Scale
+              this.timer = 0;
+              this.vx = 0; this.vy = 0;
+              this.angle = 0;
+              this.wingPhase = 0;
+              
+              if (this.type === 'bee') {
+                this.speedMax = 3.0 * config.speedMult;
+                this.accel = 0.05 * config.speedMult;
+                this.flapRate = 0.8 * config.speedMult;
+              } else {
+                // Butterfly
+                this.speedMax = 1.2 * config.speedMult; // Slightly slower
+                this.accel = 0.03 * config.speedMult;
+                this.flapRate = 0.12 * config.speedMult;
+                // Randomize butterfly color/pattern
+                this.hue = Math.random() < 0.7 ? 50 + Math.random() * 10 : 200 + Math.random() * 60; // Yellows or Blues
+                this.pattern = Math.random() > 0.5 ? 'dots' : 'veins';
+              }
+              
+              this.pickTargetInBounds();
+          }
+
+          leave() {
+              this.state = 'leave';
+              const side = Math.floor(Math.random() * 4);
+              if (side === 0) { this.targetX = Math.random() * width; this.targetY = -200; }
+              else if (side === 1) { this.targetX = width + 200; this.targetY = Math.random() * height; }
+              else if (side === 2) { this.targetX = Math.random() * width; this.targetY = height + 200; }
+              else { this.targetX = -200; this.targetY = Math.random() * height; }
+          }
+          
+          pickTargetInBounds() {
+              if (this.type === 'bee') {
+                 this.targetX = this.x + (Math.random() - 0.5) * 300;
+                 this.targetY = this.y + (Math.random() - 0.5) * 200;
+                 this.stateTimer = 60 + Math.random() * 60;
+              } else {
+                 this.targetX = Math.random() * width;
+                 this.targetY = Math.random() * height;
+                 this.stateTimer = 200 + Math.random() * 300;
+              }
+              if (this.targetX < 50) this.targetX = 50;
+              if (this.targetX > width - 50) this.targetX = width - 50;
+              if (this.targetY < 50) this.targetY = 50;
+              if (this.targetY > height - 50) this.targetY = height - 50;
+          }
+
+          update() {
+              if (this.state !== 'leave') {
+                  if (this.timer <= 0) {
+                      this.pickTargetInBounds();
+                      this.timer = this.stateTimer;
+                  }
+                  this.timer--;
+              }
+
+              const dx = this.targetX - this.x;
+              const dy = this.targetY - this.y;
+              const dist = Math.sqrt(dx*dx + dy*dy);
+              
+              if (dist < 20) {
+                   if (this.state === 'leave') {
+                       this.removable = true;
+                   } else {
+                       this.pickTargetInBounds();
+                   }
+              } else {
+                  this.vx += (dx / dist) * this.accel;
+                  this.vy += (dy / dist) * this.accel;
+                  this.vx *= 0.96;
+                  this.vy *= 0.96;
+                  
+                  this.vx += (Math.random() - 0.5) * 0.05;
+                  this.vy += (Math.random() - 0.5) * 0.05;
+                  
+                  const s = Math.sqrt(this.vx*this.vx + this.vy*this.vy);
+                  if (s > this.speedMax) {
+                      this.vx = (this.vx / s) * this.speedMax;
+                      this.vy = (this.vy / s) * this.speedMax;
+                  }
+                  
+                  this.x += this.vx;
+                  this.y += this.vy;
+              }
+
+              const moveAngle = Math.atan2(this.vy, this.vx) + Math.PI/2;
+              let diff = moveAngle - this.angle;
+              while (diff < -Math.PI) diff += Math.PI * 2;
+              while (diff > Math.PI) diff -= Math.PI * 2;
+              this.angle += diff * 0.05;
+
+              this.wingPhase += this.flapRate;
+          }
+
+          draw() {
+              if (this.removable) return;
+              ctx.save();
+              ctx.translate(this.x, this.y);
+              ctx.rotate(this.angle);
+              ctx.scale(this.z, this.z);
+
+              const wing = Math.sin(this.wingPhase);
+              
+              if (this.type === 'bee') {
+                  // === BEE ===
+                  if (Math.random() > 0.5) ctx.translate((Math.random()-0.5)*2, (Math.random()-0.5)*2);
+                  ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                  const wScale = Math.abs(wing);
+                  ctx.beginPath();
+                  ctx.ellipse(-6, 2, 4 * wScale, 8, -0.5, 0, Math.PI*2);
+                  ctx.fill();
+                  ctx.beginPath();
+                  ctx.ellipse(6, 2, 4 * wScale, 8, 0.5, 0, Math.PI*2);
+                  ctx.fill();
+                  ctx.fillStyle = '#FFD700'; 
+                  ctx.beginPath();
+                  ctx.ellipse(0, 0, 5, 8, 0, 0, Math.PI*2);
+                  ctx.fill();
+                  ctx.fillStyle = '#111';
+                  ctx.fillRect(-4, -4, 8, 2);
+                  ctx.fillRect(-4, 0, 8, 2);
+                  ctx.fillRect(-3, 4, 6, 2);
+              } else {
+                  // === REALISTIC BUTTERFLY ===
+                  ctx.scale(Math.abs(wing), 1); 
+                  
+                  // Antennae (Thin lines)
+                  ctx.strokeStyle = '#222';
+                  ctx.lineWidth = 1;
+                  ctx.beginPath();
+                  ctx.moveTo(0, -8);
+                  ctx.quadraticCurveTo(-2, -12, -4, -14); // Left
+                  ctx.moveTo(0, -8);
+                  ctx.quadraticCurveTo(2, -12, 4, -14);   // Right
+                  ctx.stroke();
+
+                  // Wing Colors
+                  // Forewing (Upper)
+                  // Draw separate wings for detail
+                  const wingColor = \`hsl(\${this.hue}, 80%, 85%)\`;
+                  const veinColor = \`hsl(\${this.hue}, 60%, 40%)\`;
+                  
+                  ctx.fillStyle = wingColor;
+                  
+                  // Upper Wing Left
+                  ctx.beginPath();
+                  ctx.moveTo(-2, -4);
+                  ctx.quadraticCurveTo(-15, -15, -18, -2);
+                  ctx.quadraticCurveTo(-15, 8, -2, 2);
+                  ctx.fill();
+                  // Veins
+                  ctx.strokeStyle = veinColor;
+                  ctx.lineWidth = 0.5;
+                  ctx.stroke();
+
+                  // Upper Wing Right
+                  ctx.beginPath();
+                  ctx.moveTo(2, -4);
+                  ctx.quadraticCurveTo(15, -15, 18, -2);
+                  ctx.quadraticCurveTo(15, 8, 2, 2);
+                  ctx.fill();
+                  ctx.stroke();
+
+                  // Lower Wing Left (Smaller, rounded)
+                  ctx.beginPath();
+                  ctx.moveTo(-2, 2);
+                  ctx.quadraticCurveTo(-12, 6, -8, 14);
+                  ctx.quadraticCurveTo(-2, 12, -1, 4);
+                  ctx.fillStyle = \`hsl(\${this.hue}, 70%, 90%)\`;
+                  ctx.fill();
+                  ctx.stroke();
+                  
+                  // Lower Wing Right
+                  ctx.beginPath();
+                  ctx.moveTo(2, 2);
+                  ctx.quadraticCurveTo(12, 6, 8, 14);
+                  ctx.quadraticCurveTo(2, 12, 1, 4);
+                  ctx.fillStyle = \`hsl(\${this.hue}, 70%, 90%)\`;
+                  ctx.fill();
+                  ctx.stroke();
+
+                  // Body (Thorax/Abdomen)
+                  ctx.fillStyle = '#222';
+                  ctx.beginPath();
+                  ctx.ellipse(0, 0, 2, 8, 0, 0, Math.PI*2);
+                  ctx.fill();
+              }
+              ctx.restore();
+          }
+      }
+
+      // === Director ===
+      const director = {
+          mode: 'quiet',
+          timer: 0,
+          insects: [],
+          
+          update: function() {
+              this.timer--;
+              
+              if (this.timer <= 0) {
+                  this.insects.forEach(i => i.leave());
+                  
+                  const r = Math.random();
+                  if (r < 0.3) this.mode = 'quiet';
+                  else if (r < 0.6) this.mode = 'butterfly';
+                  else if (r < 0.8) this.mode = 'bee'; 
+                  else this.mode = 'mixed';
+                  
+                  this.timer = 600 + Math.random() * 600; 
+                  this.spawnWave();
+              }
+              
+              for (let i = this.insects.length - 1; i >= 0; i--) {
+                  const insect = this.insects[i];
+                  insect.update();
+                  if (insect.removable) {
+                      this.insects.splice(i, 1);
+                  } else {
+                      insect.draw();
+                  }
+              }
+          },
+          
+          spawnWave: function() {
+              if (this.mode === 'quiet') return;
+              
+              if (this.mode === 'butterfly') {
+                  const count = 1 + Math.floor(Math.random() * 2);
+                  for(let i=0; i<count; i++) this.insects.push(new Insect('butterfly'));
+              } 
+              else if (this.mode === 'bee') {
+                  const count = 1 + Math.floor(Math.random()); 
+                  for(let i=0; i<count; i++) this.insects.push(new Insect('bee'));
+              }
+              else if (this.mode === 'mixed') {
+                   this.insects.push(new Insect('butterfly'));
+                   this.insects.push(new Insect('bee'));
+              }
+          }
+      };
+
+      // === Main ===
+      let particles = [];
+      
+      function init() {
+          particles = [];
+          for (let i = 0; i < config.petalCount; i++) particles.push(new Petal(true));
+          director.timer = 0;
+          director.insects = [];
+      }
+
+      let windX = 0, windY = 0;
+      function animateFrame() {
+          time += 1;
+          ctx.clearRect(0, 0, width, height);
+
+          // Flow
+          const baseFlow = noise(time * 0.002); 
+          let gust = 0;
+          if (Math.sin(time * 0.001) > 0.8) gust = Math.sin(time * 0.01) * 1.5;
+
+          windX = ((baseFlow + gust) * 0.5) * config.speedMult;
+          windY = (noise(time * 0.003 + 100) * 0.2 + 0.1) * config.speedMult;
+
+          particles.forEach(p => {
+              p.update(windX, windY);
+              p.draw();
+          });
+
+          director.update();
+          animationId = requestAnimationFrame(animateFrame);
+      }
+
+      init();
+      animateFrame();
+
+      window.szfySpringCleanup = function() {
+          if (animationId) cancelAnimationFrame(animationId);
+          window.removeEventListener('resize', resize);
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          if (container) container.innerHTML = '';
+      };
+    })();
+    `
+};
+
+if (typeof window !== 'undefined' && window.SeazonifyController) {
+    window.SeazonifyController.injectVisualEffect(springBloomEffect);
+}
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { visual: springBloomEffect };
+}
