@@ -1,0 +1,410 @@
+// Basant Panchami Effect for Seazonify Controller
+const basantPanchamiEffect = {
+    name: "Basant Panchami",
+    description: "Celebrating the arrival of spring with golden hues, flying kites, and marigold petals.",
+    icon: "🪁",
+    type: "visual",
+    author: "Md Mim Akhtar",
+    thumbnail: "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/thumbnails/basant-panchami.webp",
+    version: "1.1.5",
+    license: "https://seazonify.com/license",
+    created: "2026-01-24",
+    category: "festive",
+    tags: ["basant panchami", "spring", "kite", "yellow", "saraswati puja"],
+    css: `
+    .szfy-basant-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      overflow: hidden;
+      font-family: 'Cinzel', serif;
+    }
+    
+    /* Global Filter Overlay */
+    .szfy-basant-filter-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9998; /* Just below the canvas */
+      /* Subtle warm yellow tint using mix-blend-mode for a filter effect */
+      background: rgba(255, 200, 50, 0.08);
+      mix-blend-mode: multiply; /* Tints the underlying content */
+      transition: opacity 2s ease;
+    }
+    /* Add a second lighter layer to add glow */
+    .szfy-basant-filter-overlay::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* Radial flow to center optimism */
+      background: radial-gradient(circle at 50% 30%, rgba(255, 223, 100, 0.15), transparent 70%);
+      mix-blend-mode: screen; /* Adds light/glow */
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+    #szfy-basant-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    `,
+    html: `
+    <div class="szfy-basant-filter-overlay"></div>
+    <div class="szfy-basant-container" id="szfy-basant-container">
+      <canvas id="szfy-basant-canvas"></canvas>
+    </div>
+    `,
+    js: `
+    (function() {
+      if (typeof window.szfyBasantCleanup === 'function') {
+          window.szfyBasantCleanup();
+      }
+
+      // Cleanup logic needs to handle the overlay now too
+      const container = document.getElementById('szfy-basant-container');
+      const canvas = document.getElementById('szfy-basant-canvas');
+      const filterOverlay = document.querySelector('.szfy-basant-filter-overlay');
+
+      if (!container || !canvas) return;
+
+      const ctx = canvas.getContext('2d', { alpha: true });
+      let width, height;
+      let animationId = null;
+      let time = 0;
+
+      const config = {
+          petalCount: 20, 
+          colors: ['#FFD700', '#FF9933', '#FFFFE0', '#FFCC00'], // Golds, Oranges, Light Yellows
+          text: "Happy Basant Panchami — May the light of knowledge illuminate your life"
+      };
+
+      function resize() {
+          width = window.innerWidth;
+          height = window.innerHeight;
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          canvas.width = width * dpr;
+          canvas.height = height * dpr;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0); 
+          
+          init();
+      }
+      window.addEventListener('resize', resize);
+
+      width = window.innerWidth;
+      height = window.innerHeight; 
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      class Petal {
+          constructor() { this.reset(true); }
+          reset(init = false) {
+              this.x = Math.random() * width;
+              this.y = init ? Math.random() * height : -50;
+              this.size = Math.random() * 5 + 3;
+              this.speedY = Math.random() * 1 + 0.5;
+              this.speedX = (Math.random() - 0.5) * 0.5;
+              this.color = config.colors[Math.floor(Math.random() * config.colors.length)];
+              this.rotation = Math.random() * Math.PI * 2;
+              this.rotationSpeed = (Math.random() - 0.5) * 0.02;
+          }
+          update() {
+              this.y += this.speedY;
+              this.x += this.speedX + Math.sin(time * 0.01 + this.rotation) * 0.5;
+              this.rotation += this.rotationSpeed;
+              if (this.y > height + 50) this.reset();
+          }
+          draw() {
+              ctx.save();
+              ctx.translate(this.x, this.y);
+              ctx.rotate(this.rotation);
+              ctx.fillStyle = this.color;
+              ctx.beginPath();
+              ctx.ellipse(0, 0, this.size, this.size * 0.6, 0, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.restore();
+          }
+      }
+
+      class Kite {
+          constructor() {
+              this.reset(true);
+          }
+          
+          reset(init = false) {
+              if (init) {
+                  this.x = Math.random() * width;
+                  this.y = Math.random() * (height * 0.6);
+              } else {
+                  const side = Math.floor(Math.random() * 3); // 0: Left, 1: Right, 2: Bottom
+                  if (side === 0) {
+                      this.x = -150;
+                      this.y = Math.random() * (height * 0.6);
+                      this.vx = Math.random() * 1 + 0.5; 
+                      this.vy = (Math.random() - 0.5) * 0.5;
+                  } else if (side === 1) {
+                      this.x = width + 150;
+                      this.y = Math.random() * (height * 0.6);
+                      this.vx = -(Math.random() * 1 + 0.5); 
+                      this.vy = (Math.random() - 0.5) * 0.5;
+                  } else {
+                      this.x = Math.random() * width;
+                      this.y = height + 150;
+                      this.vx = (Math.random() - 0.5) * 1;
+                      this.vy = -(Math.random() * 1 + 0.5); 
+                  }
+              }
+              
+              if (init) {
+                  this.vx = (Math.random() - 0.5) * 1.5;
+                  this.vy = (Math.random() - 0.5) * 0.5;
+              }
+
+              this.size = Math.random() * 15 + 20; 
+              this.color1 = config.colors[Math.floor(Math.random() * config.colors.length)];
+              this.color2 = config.colors[Math.floor(Math.random() * config.colors.length)];
+              
+              this.sway = Math.random() * Math.PI * 2;
+              this.swaySpeed = 0.01 + Math.random() * 0.02;
+          }
+
+          update() {
+              this.vx += Math.sin(time * 0.01 + this.sway) * 0.005;
+              this.vy += Math.cos(time * 0.013 + this.sway) * 0.005;
+              
+              const maxSpeed = 1.5;
+              if (this.vx > maxSpeed) this.vx = maxSpeed;
+              if (this.vx < -maxSpeed) this.vx = -maxSpeed;
+              if (this.vy > maxSpeed) this.vy = maxSpeed;
+              if (this.vy < -maxSpeed) this.vy = -maxSpeed;
+
+              this.x += this.vx;
+              this.y += this.vy;
+              
+              this.sway += this.swaySpeed;
+
+              if (this.x < -200 || this.x > width + 200 || this.y < -200 || this.y > height + 200) {
+                  this.reset(false);
+              }
+          }
+          
+          draw() {
+              ctx.save();
+              ctx.translate(this.x, this.y);
+              
+              const tilt = (this.vx * 0.3) + Math.sin(this.sway) * 0.15;
+              ctx.rotate(tilt);
+              
+              // Kite Diamond
+              ctx.beginPath();
+              ctx.moveTo(0, -this.size);
+              ctx.lineTo(this.size * 0.8, 0);
+              ctx.lineTo(0, this.size);
+              ctx.lineTo(-this.size * 0.8, 0);
+              ctx.closePath();
+              
+              const grad = ctx.createLinearGradient(-this.size, -this.size, this.size, this.size);
+              grad.addColorStop(0, this.color1);
+              grad.addColorStop(1, this.color2);
+              ctx.fillStyle = grad;
+              ctx.fill();
+              
+              ctx.strokeStyle = "rgba(0,0,0,0.3)";
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(0, -this.size);
+              ctx.lineTo(0, this.size);
+              ctx.stroke();
+              ctx.beginPath();
+              ctx.moveTo(-this.size * 0.8, 0);
+              ctx.quadraticCurveTo(0, -this.size * 0.4, this.size * 0.8, 0);
+              ctx.stroke();
+
+              // Tail
+              ctx.beginPath();
+              ctx.moveTo(0, this.size);
+              ctx.lineTo(-10, this.size + 20);
+              ctx.lineTo(10, this.size + 20);
+              ctx.closePath();
+              ctx.fillStyle = this.color1;
+              ctx.fill();
+
+              ctx.restore(); 
+              
+              ctx.save();
+              ctx.translate(this.x, this.y); 
+              
+              const attachX = 0 + (-Math.sin(tilt) * this.size); 
+              const attachY = 0 + (Math.cos(tilt) * this.size);
+              
+              ctx.beginPath();
+              ctx.moveTo(attachX, attachY);
+              
+              const stringLen = 300; 
+              const dragX = -this.vx * 50; 
+              
+              ctx.bezierCurveTo(
+                  attachX + dragX * 0.5, attachY + stringLen * 0.3, 
+                  attachX + dragX, attachY + stringLen * 0.7,       
+                  attachX + dragX * 1.5, attachY + stringLen        
+              );
+              
+              const stringGrad = ctx.createLinearGradient(0, attachY, 0, attachY + stringLen);
+              stringGrad.addColorStop(0, "rgba(255,255,255,0.6)");
+              stringGrad.addColorStop(1, "rgba(255,255,255,0)");
+              ctx.strokeStyle = stringGrad;
+              ctx.lineWidth = 1.5;
+              ctx.stroke();
+
+              ctx.restore();
+          }
+      }
+
+      class ScrollingBanner {
+          constructor() {
+              this.active = true;
+              this.phase = 'hidden'; 
+              this.opacity = 0;
+              this.x = width;
+              this.contentWidth = 0;
+              this.nextShowTime = Date.now() + 1000; 
+              
+              this.baseSpeed = 2; 
+          }
+
+          update() {
+              const now = Date.now();
+
+              if (this.phase === 'hidden') {
+                  if (now >= this.nextShowTime) {
+                      this.phase = 'fadeIn';
+                      this.x = width; 
+                      this.baseSpeed = width < 600 ? 1.5 : 2.5; 
+                  }
+              }
+              else if (this.phase === 'fadeIn') {
+                  this.opacity += 0.02;
+                  this.x -= this.baseSpeed; 
+                  if (this.opacity >= 1) {
+                      this.opacity = 1;
+                      this.phase = 'scroll';
+                  }
+              }
+              else if (this.phase === 'scroll') {
+                  this.x -= this.baseSpeed;
+                  
+                  if (this.contentWidth > 0 && this.x < -(this.contentWidth + width)) {
+                      this.phase = 'fadeOut'; 
+                      this.phase = 'hidden';
+                      this.opacity = 0;
+                      this.nextShowTime = Date.now() + 60000; 
+                  }
+              }
+              else if (this.phase === 'fadeOut') {
+                   this.opacity -= 0.02;
+                   this.x -= this.baseSpeed;
+                   if (this.opacity <= 0) {
+                       this.opacity = 0;
+                       this.phase = 'hidden';
+                       this.nextShowTime = Date.now() + 60000;
+                   }
+              }
+          }
+
+          draw() {
+              if (this.phase === 'hidden') return;
+
+              ctx.save();
+              ctx.globalAlpha = this.opacity;
+
+              const fontSize = Math.max(16, Math.min(32, width * 0.04));
+              const stripHeight = fontSize * 2.2;
+              const y = height - (stripHeight * 1.5); 
+
+              const grad = ctx.createLinearGradient(0, y, width, y);
+              grad.addColorStop(0, "rgba(255, 215, 0, 0)"); 
+              grad.addColorStop(0.2, "rgba(255, 215, 0, 0.9)");
+              grad.addColorStop(0.8, "rgba(255, 215, 0, 0.9)");
+              grad.addColorStop(1, "rgba(255, 215, 0, 0)");
+
+              ctx.fillStyle = grad;
+              ctx.fillRect(0, y, width, stripHeight);
+
+              ctx.font = "700 " + fontSize + "px 'Cinzel', serif";
+              ctx.textBaseline = "middle";
+              ctx.fillStyle = "#5c3a00"; 
+
+              const text = config.text;
+              this.contentWidth = ctx.measureText(text).width;
+              
+              ctx.shadowColor = "rgba(255, 255, 255, 0.4)";
+              ctx.shadowBlur = 0;
+              ctx.shadowOffsetX = 1;
+              ctx.shadowOffsetY = 1;
+              
+              ctx.fillText(text, this.x, y + stripHeight / 2);
+              
+              ctx.restore();
+          }
+      }
+
+      let petals = [];
+      let kites = [];
+      let banner = new ScrollingBanner();
+
+      function init() {
+          petals = [];
+          for(let i=0; i<config.petalCount; i++) petals.push(new Petal());
+          
+          kites = [];
+          
+          let kiteCount = 3; 
+          if (width < 600) kiteCount = 1;      
+          else if (width < 1024) kiteCount = 2; 
+          
+          for(let i=0; i<kiteCount; i++) kites.push(new Kite());
+      }
+
+      function animateFrame() {
+          time++;
+          ctx.clearRect(0, 0, width, height);
+
+          kites.forEach(k => { k.update(); k.draw(); });
+          banner.update();
+          banner.draw();
+          petals.forEach(p => { p.update(); p.draw(); });
+
+          animationId = requestAnimationFrame(animateFrame);
+      }
+
+      init();
+      animateFrame();
+
+      window.szfyBasantCleanup = function() {
+          if (animationId) cancelAnimationFrame(animationId);
+          window.removeEventListener('resize', resize);
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          if (container) container.innerHTML = '';
+          if (filterOverlay) filterOverlay.remove();
+      };
+    })();
+    `
+};
+
+if (typeof window !== 'undefined' && window.SeazonifyController) {
+    window.SeazonifyController.injectVisualEffect(basantPanchamiEffect);
+}
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { visual: basantPanchamiEffect };
+}
