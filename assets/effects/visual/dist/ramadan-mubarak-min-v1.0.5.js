@@ -1,0 +1,296 @@
+const ramadanMubarakEffect = {
+name: "Ramadan Mubarak",
+description: "A breathtaking, responsive visual experience for Ramadan featuring opening gates and adaptive floating lanterns.",
+author: "Md Mim Akhtar",
+type: "visual",
+icon: "☪️",
+thumbnail: "https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/thumbnails/ramadan-mubarak.webp",
+license: "https://seazonify.com/license",
+version: "1.0.1",
+created: "2026-02-21",
+category: "celebration",
+tags: ["ramadan", "mubarak", "islam", "legendary", "opening", "gold", "responsive"],
+css: `@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700&display=swap');.szfy-le-container{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:99999;overflow:hidden;font-family:'Amiri',serif;}.szfy-le-gate{position:absolute;top:0;bottom:0;width:50%;background:#090a0f;z-index:5;will-change:transform;animation:szfy-le-gate-slide 2.5s cubic-bezier(0.7,0,0.3,1) 6s forwards;}.szfy-le-gate.left{left:0;background:radial-gradient(circle at 100% 50%,#1a2a3a 0%,#090a0f 80%);border-right:1px solid rgba(255,215,0,0.1);}.szfy-le-gate.right{right:0;background:radial-gradient(circle at 0% 50%,#1a2a3a 0%,#090a0f 80%);border-left:1px solid rgba(255,215,0,0.1);}#szfy-le-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:6;animation:szfy-le-fade-out 2s ease 6s forwards;}#szfy-le-foreground{position:absolute;top:0;left:0;width:100%;height:100%;z-index:55;pointer-events:none;opacity:0;animation:szfy-le-fade-in 3s ease 6s forwards;}.szfy-le-moon-wrapper{position:absolute;top:5vh;right:5vw;width:clamp(60px,12vw,150px);height:clamp(60px,12vw,150px);filter:drop-shadow(0 0 30px rgba(255,223,128,0.4));animation:szfy-le-float 8s ease-in-out infinite alternate,szfy-le-fade-out 1.5s ease 6s forwards;z-index:50;transition:all 1s ease;}.szfy-le-moon{width:100%;height:100%;}.szfy-le-lantern-container{position:absolute;top:-10px;z-index:60;display:flex;flex-direction:column;align-items:center;animation:szfy-le-lantern-shrink 2.5s cubic-bezier(0.7,0,0.3,1) 6s forwards;transform-origin:top center;}.szfy-le-lantern-sway{transform-origin:top center;animation:szfy-le-sway var(--sway-dur) ease-in-out infinite alternate;}.szfy-le-lantern-string{width:2px;background:linear-gradient(180deg,rgba(255,255,255,0.1),#d4af37);height:var(--string-len);margin:0 auto;animation:szfy-le-string-yo-yo var(--yoyo-dur) ease-in-out infinite;}.szfy-le-lantern-svg{width:var(--size);height:auto;filter:drop-shadow(0 0 15px var(--glow-color));display:block;}.szfy-le-lantern-light{animation:szfy-le-flicker 4s infinite alternate;}.szfy-le-text-container{position:absolute;bottom:25%;left:0;width:100%;text-align:center;z-index:55;mix-blend-mode:screen;animation:szfy-le-fade-out 1.5s ease 5.5s forwards;padding:0 20px;}.szfy-le-calligraphy{display:block;margin:0 auto 15px auto;max-width:200px;width:clamp(100px,40vw,200px);height:auto;filter:drop-shadow(0 0 10px rgba(212,175,55,0.4));opacity:0;animation:szfy-le-text-reveal 1.5s cubic-bezier(0.2,0.8,0.2,1) forwards;transform:translateY(30px);}.szfy-le-title{font-family:'Cinzel Decorative',cursive;font-size:clamp(2.5rem,8vw,6rem);margin:0;line-height:1.1;background:linear-gradient(135deg,#fff 20%,#ffd700 50%,#fff 80%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 30px rgba(212,175,55,0.5);animation:szfy-le-text-reveal 1.5s cubic-bezier(0.2,0.8,0.2,1) forwards;opacity:0;transform:translateY(30px);}.szfy-le-subtitle{font-family:'Amiri',serif;font-size:clamp(1rem,4vw,2rem);color:#e0c080;margin-top:1rem;letter-spacing:0.1em;opacity:0;animation:szfy-le-text-reveal 1.5s cubic-bezier(0.2,0.8,0.2,1) 0.5s forwards;transform:translateY(20px);}@keyframes szfy-le-float{0%{transform:translateY(0);}100%{transform:translateY(-15px);}}@keyframes szfy-le-sway{0%{transform:rotate(var(--sway-ang));}100%{transform:rotate(calc(var(--sway-ang) * -1));}}@keyframes szfy-le-flicker{0%,100%{opacity:0.8;}50%{opacity:1;filter:brightness(1.2);}}@keyframes szfy-le-text-reveal{to{opacity:1;transform:translateY(0);}}@keyframes szfy-le-gate-slide{0%{transform:translateX(0);}100%{transform:translateX(var(--slide-dir));}}.szfy-le-gate.left{--slide-dir:-100%;}.szfy-le-gate.right{--slide-dir:100%;}@keyframes szfy-le-fade-out{0%{opacity:1;}100%{opacity:0;pointer-events:none;}}@keyframes szfy-le-fade-in{0%{opacity:0;}100%{opacity:1;}}@keyframes szfy-le-string-yo-yo{0%,100%{height:var(--string-len);}50%{height:calc(var(--string-len) * 0.8);}}@keyframes szfy-le-lantern-shrink{0%{transform:scale(1);}100%{transform:scale(0.6);}}@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}.szfy-le-gate{display:none;}}`,
+html: `<div id="szfy-le-container" class="szfy-le-container"><div class="szfy-le-gate left"></div><div class="szfy-le-gate right"></div><canvas id="szfy-le-canvas"></canvas><canvas id="szfy-le-foreground"></canvas><div class="szfy-le-moon-wrapper layer-bg" data-depth="0.05"><svg class="szfy-le-moon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><filter id="moonGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" /><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter><radialGradient id="moonGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fffbe6" /><stop offset="20%" stop-color="#ffdf80" /><stop offset="100%" stop-color="#d4af37" /></radialGradient></defs><path d="M90,10 C 130,10 170,50 170,100 C 170,150 130,190 90,190 C 110,170 120,135 120,100 C 120,65 110,30 90,10 Z" fill="url(#moonGrad)" filter="url(#moonGlow)" /></svg></div><div id="szfy-le-lanterns"></div><div class="szfy-le-text-container layer-ui" data-depth="0.02"><img src="https://cdn.jsdelivr.net/gh/iMiMofficial/Seazonify@main/assets/effects/visual/assets/img/asset-1771586394847.png?updatedAt=1771527738911" alt="Ramadan Mubarak Calligraphy" class="szfy-le-calligraphy" /><h1 class="szfy-le-title">Ramadan Mubarak</h1><div class="szfy-le-subtitle">May your days be filled with light & peace</div></div></div>`,
+js: `(function() {
+const container = document.getElementById('szfy-le-container');
+const canvas = document.getElementById('szfy-le-canvas');
+const ctx = canvas.getContext('2d');
+const fgCanvas = document.getElementById('szfy-le-foreground');
+const fgCtx = fgCanvas.getContext('2d');
+const lanternsContainer = document.getElementById('szfy-le-lanterns');
+let width, height;
+let stars = [], shootingStars = [], particles = [], persistentParticles = [];
+let mouseX = 0, mouseY = 0;
+let targetMouseX = 0, targetMouseY = 0;
+let animationId;
+let resizeTimeout;
+function getConfig() {
+const w = window.innerWidth;
+const config = {
+starCount: w < 768 ? 40 : 80,
+particleCount: w < 768 ? 10 : 25,
+// Reduced/Optimized config for persistent dust
+dustCount: w < 768 ? 12 : 25,
+lanterns: []
+};
+if (w < 768) {
+config.lanterns = [
+{x: 10, h: 15, s: 70},
+{x: 50, h: 20, s: 80},
+{x: 90, h: 12, s: 75}
+];
+} else if (w < 1024) {
+config.lanterns = [
+{x: 10, h: 20, s: 100},
+{x: 30, h: 12, s: 80},
+{x: 50, h: 22, s: 110},
+{x: 70, h: 15, s: 90},
+{x: 90, h: 18, s: 95}
+];
+} else {
+config.lanterns = [
+{x: 4, h: 25, s: 130},
+{x: 16, h: 15, s: 90},
+{x: 28, h: 30, s: 120},
+{x: 40, h: 12, s: 85},
+{x: 60, h: 20, s: 110},
+{x: 72, h: 28, s: 125},
+{x: 84, h: 18, s: 95},
+{x: 96, h: 22, s: 100}
+];
+}
+return config;
+}
+let config = getConfig();
+function init() {
+resize();
+window.addEventListener('resize', handleResize);
+window.addEventListener('mousemove', onMouseMove);
+createLanterns();
+initStars();
+initParticles();
+initPersistentParticles();
+animate();
+}
+function handleResize() {
+clearTimeout(resizeTimeout);
+resizeTimeout = setTimeout(() => {
+resize();
+const newConfig = getConfig();
+if (JSON.stringify(newConfig.lanterns) !== JSON.stringify(config.lanterns)) {
+config = newConfig;
+createLanterns();
+initStars();
+initParticles();
+initPersistentParticles();
+}
+}, 200);
+}
+function resize() {
+width = window.innerWidth;
+height = window.innerHeight;
+canvas.width = width;
+canvas.height = height;
+if (fgCanvas) {
+fgCanvas.width = width;
+fgCanvas.height = height;
+}
+}
+function onMouseMove(e) {
+targetMouseX = (e.clientX - width / 2) * 0.05;
+targetMouseY = (e.clientY - height / 2) * 0.05;
+}
+function createLanterns() {
+lanternsContainer.innerHTML = '';
+const lanternPath = "M20,60 L80,60 L90,40 L10,40 Z M15,40 L15,140 L85,140 L85,40 M15,140 L25,160 L75,160 L85,140 M50,0 L50,40";
+const complexPath = \`
+          M50,10 L70,30 L80,50 L80,120 L50,150 L20,120 L20,50 L30,30 Z
+          M50,10 L50,0 M40,0 L60,0
+          M30,50 L70,50 M30,120 L70,120
+          M50,150 L50,170 L45,175 L55,175 L50,170
+        \`;
+config.lanterns.forEach((l, i) => {
+const containerDiv = document.createElement('div');
+containerDiv.className = 'szfy-le-lantern-container';
+containerDiv.style.left = l.x + '%';
+const swayDiv = document.createElement('div');
+swayDiv.className = 'szfy-le-lantern-sway';
+swayDiv.style.setProperty('--string-len', l.h + 'vh');
+swayDiv.style.setProperty('--size', l.s + 'px');
+swayDiv.style.setProperty('--sway-dur', (3 + Math.random() * 2) + 's');
+swayDiv.style.setProperty('--yoyo-dur', (4 + Math.random() * 4) + 's');
+swayDiv.style.setProperty('--sway-ang', (2 + Math.random() * 3) + 'deg');
+swayDiv.style.setProperty('--glow-color', 'rgba(255, 170, 0, 0.5)');
+const isComplex = i % 2 === 0;
+const svgContent = \`
+            <div class="szfy-le-lantern-string"></div>
+            <svg class="szfy-le-lantern-svg" viewBox="0 0 100 200" fill="none" stroke="#d4af37" stroke-width="2">
+              <defs>
+                <filter id="lGlow\${i}">
+                  <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                  <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+                <linearGradient id="lGrad\${i}" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#b8860b;stop-opacity:1" />
+                  <stop offset="50%" style="stop-color:#ffd700;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              <path d="\${isComplex ? 'M30,50 L70,50 L70,120 L30,120 Z' : 'M25,50 L75,50 L75,130 L25,130 Z'}" 
+                fill="rgba(255, 200, 50, 0.15)" stroke="none" />
+              <circle cx="50" cy="90" r="15" fill="#fff" class="szfy-le-lantern-light" filter="url(#lGlow\${i})" opacity="0.8" />
+              <path d="\${isComplex ? complexPath : lanternPath}" stroke="url(#lGrad\${i})" fill="none" stroke-linejoin="round" />
+            </svg>
+          \`;
+swayDiv.innerHTML = svgContent;
+containerDiv.appendChild(swayDiv);
+lanternsContainer.appendChild(containerDiv);
+});
+}
+function initStars() {
+stars = [];
+for(let i=0; i<config.starCount; i++) {
+stars.push({
+x: Math.random() * width,
+y: Math.random() * height * 0.7,
+size: Math.random() * 2,
+blink: Math.random() * 0.05,
+opacity: Math.random(),
+layer: Math.random() * 0.5 + 0.5
+});
+}
+}
+function initParticles() {
+particles = [];
+for(let i=0; i<config.particleCount; i++) {
+particles.push({
+x: Math.random() * width,
+y: height + Math.random() * 200,
+size: Math.random() * 3,
+speed: Math.random() * 1 + 0.5,
+wobble: Math.random() * Math.PI * 2
+});
+}
+}
+function initPersistentParticles() {
+persistentParticles = [];
+for(let i=0; i<config.dustCount; i++) {
+persistentParticles.push({
+type: Math.random() > 0.5 ? 'moon' : 'star',
+x: Math.random() * width,
+y: Math.random() * height,
+size: Math.random() * 8 + 4,
+rotation: Math.random() * 360,
+rotSpeed: (Math.random() - 0.5) * 1,
+speedY: Math.random() * 0.4 + 0.1,
+speedX: (Math.random() - 0.5) * 0.3,
+opacity: Math.random() * 0.5 + 0.3,
+pulse: Math.random() * 0.02,
+hue: Math.random() > 0.7 ? 50 : 210
+});
+}
+}
+function spawnShootingStar() {
+if (Math.random() > 0.005) return;
+shootingStars.push({
+x: Math.random() * width,
+y: Math.random() * height * 0.3,
+len: Math.random() * 100 + 50,
+speed: Math.random() * 10 + 15,
+angle: 45 * (Math.PI / 180),
+life: 1.0
+});
+}
+function draw() {
+mouseX += (targetMouseX - mouseX) * 0.1;
+mouseY += (targetMouseY - mouseY) * 0.1;
+ctx.clearRect(0, 0, width, height);
+ctx.fillStyle = "#fff";
+stars.forEach(s => {
+s.opacity += s.blink;
+if(s.opacity > 1 || s.opacity < 0.2) s.blink *= -1;
+let px = s.x - mouseX * s.layer;
+let py = s.y - mouseY * s.layer;
+ctx.globalAlpha = s.opacity;
+ctx.beginPath();
+ctx.arc(px, py, s.size * s.layer, 0, Math.PI*2);
+ctx.fill();
+});
+spawnShootingStar();
+for (let i = shootingStars.length - 1; i >= 0; i--) {
+let s = shootingStars[i];
+s.x += s.speed * Math.cos(s.angle);
+s.y += s.speed * Math.sin(s.angle);
+s.life -= 0.02;
+if(s.life <= 0) { shootingStars.splice(i, 1); continue; }
+const tailX = s.x - s.len * Math.cos(s.angle);
+const tailY = s.y - s.len * Math.sin(s.angle);
+const grad = ctx.createLinearGradient(s.x, s.y, tailX, tailY);
+grad.addColorStop(0, "rgba(255, 255, 255, " + s.life + ")");
+grad.addColorStop(1, "rgba(255, 255, 255, 0)");
+ctx.lineWidth = 2; ctx.strokeStyle = grad;
+ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(tailX, tailY); ctx.stroke();
+}
+particles.forEach((p) => {
+p.y -= p.speed;
+p.x += Math.sin(p.wobble += 0.05) * 0.5;
+p.x -= mouseX * 0.2;
+if(p.y < -10) { p.y = height + 10; p.x = Math.random() * width; }
+ctx.globalAlpha = 1;
+ctx.fillStyle = "rgba(255, 215, 0, " + (0.3 + Math.sin(p.wobble) * 0.2) + ")";
+ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
+});
+fgCtx.clearRect(0, 0, width, height);
+persistentParticles.forEach((p) => {
+p.y -= p.speedY;
+p.x += p.speedX;
+p.rotation += p.rotSpeed;
+p.opacity += p.pulse;
+if (p.opacity > 0.8 || p.opacity < 0.2) p.pulse *= -1;
+if(p.y < -20) { p.y = height + 20; p.x = Math.random() * width; }
+if(p.x > width + 20) p.x = -20;
+if(p.x < -20) p.x = width + 20;
+fgCtx.globalAlpha = p.opacity;
+fgCtx.fillStyle = p.hue === 50 ? 'rgba(255, 215, 0, 1)' : 'rgba(255, 255, 255, 1)';
+fgCtx.save();
+fgCtx.translate(p.x, p.y);
+fgCtx.rotate(p.rotation * Math.PI / 180);
+fgCtx.beginPath();
+if(p.type === 'moon') {
+fgCtx.arc(0, 0, p.size, 0, Math.PI * 2);
+fgCtx.globalCompositeOperation = 'destination-out';
+fgCtx.arc(p.size * 0.3, -p.size * 0.3, p.size * 0.8, 0, Math.PI * 2);
+fgCtx.globalCompositeOperation = 'source-over';
+} else {
+const r = p.size;
+fgCtx.moveTo(0, -r);
+fgCtx.quadraticCurveTo(r * 0.1, -r * 0.1, r, 0);
+fgCtx.quadraticCurveTo(r * 0.1, r * 0.1, 0, r);
+fgCtx.quadraticCurveTo(-r * 0.1, r * 0.1, -r, 0);
+fgCtx.quadraticCurveTo(-r * 0.1, -r * 0.1, 0, -r);
+}
+fgCtx.fill();
+fgCtx.restore();
+});
+ctx.globalAlpha = 1;
+fgCtx.globalAlpha = 1;
+animationId = requestAnimationFrame(draw);
+}
+function animate() { draw(); }
+window.szfyRamadanMubarakCleanup = function() {
+cancelAnimationFrame(animationId);
+window.removeEventListener('resize', handleResize);
+window.removeEventListener('mousemove', onMouseMove);
+if (container) container.remove();
+}
+if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
+else { init(); }
+})();`
+};
+if (typeof window !== 'undefined' && window.SeazonifyController) {
+window.SeazonifyController.injectVisualEffect(ramadanMubarakEffect);
+}
+if (typeof module !== 'undefined' && module.exports) {
+module.exports = ramadanMubarakEffect;
+}
